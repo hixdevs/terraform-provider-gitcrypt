@@ -16,10 +16,11 @@ func TestAccDataSourceEncryptedFile(t *testing.T) {
 			{
 				Config: testAccDataSourceEncryptedFile,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestMatchResourceAttr("data.gitcrypt_encrypted_file.example", "file_path", regexp.MustCompile("^.*")),
+					resource.TestMatchResourceAttr("data.gitcrypt_encrypted_file.example", "envs", regexp.MustCompile("^.*")),
 					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var1", "value1"),
-					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var2", "value2"),
-					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var3", "value3"),
+					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var2", "prd_value2"),
+					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var3", "prd_override_value3"),
+					resource.TestCheckResourceAttr("data.gitcrypt_encrypted_file.example", "secrets.var4", "prd_override_value4"),
 				),
 			},
 		},
@@ -28,10 +29,10 @@ func TestAccDataSourceEncryptedFile(t *testing.T) {
 
 const testAccDataSourceEncryptedFile = `
 provider "gitcrypt" {
-    gitcrypt_key_base64 = "AEdJVENSWVBUS0VZAAAAAgAAAAAAAAABAAAABAAAAAAAAAADAAAAIDJ6yMP6EdHmYJ2VyFa1LU1zitt4G4gJdD3O1/8L1ZZEAAAABQAAAEAtubx4wwVHvOAIuz/K7fvrtFFUBzsA2Dl4AGuyK3WGOd1v1HuDFW6tN65V4D3j+M4+0ly25+xYukN7Qdw6ZjDJAAAAAA=="
+    gitcrypt_key_base64 = "AEdJVENSWVBUS0VZAAAAAgAAAAAAAAABAAAABAAAAAAAAAADAAAAIP26dkCnQLES83htwVCWmAuBx1Kiq6llC6oDSqHTbQ/rAAAABQAAAECy6URjldOBe8HX9onc4D7bx4rizU7QScmDTWVJksb0h5JZGOpV0prhHmwedfqQE0xAvTKG4wpKD4HU1TKAqI00AAAAAA=="
 }
 
 data "gitcrypt_encrypted_file" "example" {
-  file_path = "./test-data/encrypted_vars.yml"
+  envs = ["./test-data/.env", "./test-data/.env.prd", "./test-data/.env.prd.override"]
 }
 `

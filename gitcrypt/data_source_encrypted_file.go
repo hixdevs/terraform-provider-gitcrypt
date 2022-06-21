@@ -2,11 +2,12 @@ package provider
 
 import (
 	"context"
+	"os"
 
-	gc "github.com/bcdtriptech/terraform-provider-gitcrypt/gitcrypt/internal/gitcrypt"
+	gc "github.com/hixdevs/terraform-provider-gitcrypt/gitcrypt/internal/gitcrypt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"gopkg.in/yaml.v3"
+	"github.com/joho/godotenv"
 )
 
 func dataSourceEncryptedFile() *schema.Resource {
@@ -15,11 +16,13 @@ func dataSourceEncryptedFile() *schema.Resource {
 		Description: "Data source for read and decrypt file encrypted by git-crypt.",
 		ReadContext: dataSourceEncryptedFileRead,
 		Schema: map[string]*schema.Schema{
-			"file_path": {
-				// Path to the file encrypted by git-crypt
-				Description: "Path to the file encrypted by git-crypt",
-				Type:        schema.TypeString,
+			"envs": {
+				Description: "Paths to .env files encrypted by git-crypt",
 				Required:    true,
+				Type:        schema.TypeList,
+				Elem:        schema.Schema{
+					Type: schema.TypeString,
+				},
 			},
 			"secrets": &schema.Schema{
 				// Variables from ecrypted file after decryption
@@ -33,24 +36,45 @@ func dataSourceEncryptedFile() *schema.Resource {
 }
 
 func dataSourceEncryptedFileRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-
+	secrets := make(map[string]string)
 	gitcryptKey := meta.(*gc.KeyData)
+	paths := d.Get("envs").([]string)
+	// raw := d.Get("envs").([]interface{})
+	// paths := make([]string, len(raw))
+	// for i, v := range raw {
+	// 	l[i] = v.(string)
+	// }
+	// paths := d.Get("envs").([]string{})
 
-	filePath := d.Get("file_path").(string)
+	for _, path := range paths {
+		variables := make(map[string]string)
+		file, err := os.Open(path)
+		if err != nil {
+			return diag.FromErr(err)
+		}
+		switch pathType := file.(type) {
+		case []byte:
+			decrypted, err := gc.UnlockFile(path, *gitcryptKey)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+			variables, err := godotenv.Parse(decrypted)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+		case string:
+			variables, err := godotenv.Read(path)
+			if err != nil {
+				return diag.FromErr(err)
+			}
+		}
 
-	decryptedContent, err := gc.UnlockFile(filePath, *gitcryptKey)
-	if err != nil {
-		return diag.FromErr(err)
+		for variable, value := range variables {
+			secrets[variable] = value
+		}
 	}
-
-	secretsMap := make(map[string]string, 0)
-
-	err = yaml.Unmarshal(decryptedContent, &secretsMap)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	err = d.Set("secrets", secretsMap)
+	
+	err = d.Set("secrets", secrets)
 	if err != nil {
 		return diag.FromErr(err)
 	}

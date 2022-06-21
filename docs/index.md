@@ -11,9 +11,9 @@ The gitcrypt provider is used to read files encrypted with [git-crypt](https://g
 provider "gitcrypt" {
 }
 
-# Read encrypte file:
+# Read encrypted .env files:
 data "gitcrypt_encrypted_file" "example" {
-  file_path = "./test-data/encrypted_vars.yml"
+  envs = ["./test-data/.env", "./test-data/.env.prd", "./test-data/.env.prd.override"]
 }
 ```
 
@@ -32,7 +32,7 @@ To get the value for argument `gitcrypt_key_base64`, you need to get a git-crypt
 ```
 Output example:
 ```
-AEdJVENSWVBUS0VZAAAAAgAAAAAAAAABAAAABAAAAAAAAAADAAAAIDJ6yMP6EdHmYJ2VyFa1LU1zitt4G4gJdD3O1/8L1ZZEAAAABQAAAEAtubx4wwVHvOAIuz/K7fvrtFFUBzsA2Dl4AGuyK3WGOd1v1HuDFW6tN65V4D3j+M4+0ly25+xYukN7Qdw6ZjDJAAAAAA==
+AEdJVENSWVBUS0VZAAAAAgAAAAAAAAABAAAABAAAAAAAAAADAAAAIP26dkCnQLES83htwVCWmAuBx1Kiq6llC6oDSqHTbQ/rAAAABQAAAECy6URjldOBe8HX9onc4D7bx4rizU7QScmDTWVJksb0h5JZGOpV0prhHmwedfqQE0xAvTKG4wpKD4HU1TKAqI00AAAAAA==
 ```
 
 !> It is strongly NOT recommended to set parameter `gitcrypt_key_base64` in the open. It is dangerous and not secure.

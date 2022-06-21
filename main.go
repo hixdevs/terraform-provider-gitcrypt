@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	provider "github.com/bcdtriptech/terraform-provider-gitcrypt/gitcrypt"
+	provider "github.com/hixdevs/terraform-provider-gitcrypt/gitcrypt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
 )
 
@@ -38,7 +38,7 @@ func main() {
 
 	if debugMode {
 		// TODO: update this string with the full name of your provider as used in your configs
-		err := plugin.Debug(context.Background(), "registry.terraform.io/providers/bcdtriptech/gitcrypt", opts)
+		err := plugin.Debug(context.Background(), "registry.terraform.io/providers/hixdevs/gitcrypt", opts)
 		if err != nil {
 			log.Fatal(err.Error())
 		}

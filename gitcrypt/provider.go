@@ -3,7 +3,7 @@ package provider
 import (
 	"context"
 
-	gc "github.com/bcdtriptech/terraform-provider-gitcrypt/gitcrypt/internal/gitcrypt"
+	gc "github.com/hixdevs/terraform-provider-gitcrypt/gitcrypt/internal/gitcrypt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )

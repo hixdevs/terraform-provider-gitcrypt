@@ -4,7 +4,7 @@ This is a simple terraform provider which can decrypt files encrypted with [git-
 
 # Actions status
 
-[![release](https://github.com/bcdtriptech/terraform-provider-gitcrypt/actions/workflows/release.yml/badge.svg)](https://github.com/bcdtriptech/terraform-provider-gitcrypt/actions/workflows/release.yml)  [![Tests](https://github.com/bcdtriptech/terraform-provider-gitcrypt/actions/workflows/test.yml/badge.svg?branch=main&event=push)](https://github.com/bcdtriptech/terraform-provider-gitcrypt/actions/workflows/test.yml)
+[![release](https://github.com/hixdevs/terraform-provider-gitcrypt/actions/workflows/release.yml/badge.svg)](https://github.com/hixdevs/terraform-provider-gitcrypt/actions/workflows/release.yml)  [![Tests](https://github.com/hixdevs/terraform-provider-gitcrypt/actions/workflows/test.yml/badge.svg?branch=main&event=push)](https://github.com/hixdevs/terraform-provider-gitcrypt/actions/workflows/test.yml)
 
 # What is this provider for?
 
@@ -14,7 +14,7 @@ In order to provide terraform with access to encrypted content you can use this 
 
 # Documentation
 
-[Terraform docs](https://registry.terraform.io/providers/bcdtriptech/gitcrypt/latest/docs)
+[Terraform docs](https://registry.terraform.io/providers/hixdevs/gitcrypt/latest/docs)
 
 # Encrypted file format
 
@@ -24,4 +24,4 @@ You can see [ENCRYPTED](gitcrypt/test-data/encrypted_vars.yml) and [DECRYPTED](g
 
 # Contributing
 
-If you're having trouble using gitcrypt provider, create a [Github issue](https://github.com/bcdtriptech/terraform-provider-gitcrypt/issues) or open a [pull request](https://github.com/bcdtriptech/terraform-provider-gitcrypt/pulls).
+If you're having trouble using gitcrypt provider, create a [Github issue](https://github.com/hixdevs/terraform-provider-gitcrypt/issues) or open a [pull request](https://github.com/hixdevs/terraform-provider-gitcrypt/pulls).

@@ -17,7 +17,7 @@ var3: value3
 ```hcl
 # Read encrypte file:
 data "gitcrypt_encrypted_file" "example" {
-  file_path = "./test-data/encrypted_vars.yml"
+  envs = ["./test-data/.env", "./test-data/.env.prd", "./test-data/.env.prd.override"]
 }
 
 # Use value from encrypted file (2 formats available)
@@ -35,12 +35,12 @@ resource "aws_ssm_parameter" "db_password" {
 
 ## Argument Reference
 
- * `file_path` - (Required) Path to the encrypted file.
+ * `envs` - (Required) Paths to the encrypted .env files.
 
 ## Attributes Reference
 
- * `file_path` - Path to the encrypted file.
- * `secrets`   - Map of the secrets from encrypted file. Use one of the following syntaxes to access a specific secret:
+ * `envs` - Paths to the encrypted .env files.
+ * `secrets` - Map of the secrets from encrypted file. Use one of the following syntaxes to access a specific secret:
  ```
  value = data.gitcrypt_encrypted_file.example.secrets.var1
  value = data.gitcrypt_encrypted_file.example.secrets["var1"]
